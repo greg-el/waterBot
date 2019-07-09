@@ -12,7 +12,7 @@ unsigned long time = 0;
 unsigned long debounce = 200UL;   
 
 void setup() {
-  pinMode(inPin,  INPUT);
+  pinMode(inPin,  INPUT_PULLUP);
   pinMode(outPin, OUTPUT);
   pinMode(LED_BUILTIN, OUTPUT);
   Serial.begin(9600);
@@ -23,6 +23,14 @@ void setup() {
 
 void loop() {
   reading = digitalRead(inPin);
+  if (reading == 0) {
+    state = HIGH;
+    message = 420;
+  } else {
+    state = LOW;
+    message = 69;
+  }
+  /*
   if (reading == HIGH && previous == LOW && millis() - time > debounce) {
     if (state == HIGH) {
       state = LOW;
@@ -33,8 +41,11 @@ void loop() {
       time = millis(); 
     }
   }
+  */
+  Serial.print(reading);
+  Serial.print("\n");
   digitalWrite(LED_BUILTIN, state);
   digitalWrite(outPin, state);
   mySwitch.send(message, 24);
-  previous = reading;
+  //previous = reading;
 }
